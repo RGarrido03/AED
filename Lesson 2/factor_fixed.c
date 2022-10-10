@@ -58,61 +58,9 @@ int factor(int n,int *prime_factors,int *multiplicity)
 }
 
 
-// Calculating the number of divisors of n
-// There are (1+m[0])*(1+m[1])*...*(1+m[nf-1]) divisors.
-int calculate_divisor_number(int num_factors, int *multiplicity)
-{
-  int a;
-  int divisors_number = (1 + multiplicity[0]); // Set the first
-  for(a = 1; a <= (num_factors-1); a++)
-  {
-    divisors_number *= (1 + multiplicity[a]);
-  }
-  return divisors_number;
-}
-
-
-// Calculate divisors - THIS AIN'T RIGHT BITCH!
-int calculate_divisors(int n, int divisors_number, int num_factors, int *factors, int *multiplicity, int *divisors)
-{
-  int a,j,k;
-  divisors[0] = 1; // The first divisor is always 1
-  divisors[divisors_number - 1] = n; // The last divisor is always the number itself
-
-  k = 1; // divisor number counter
-  for (j = 0; j < num_factors; j++) // j is a factorial number counter
-  {
-    if (multiplicity[j] == 1)
-    {
-      divisors[k] = factors[j];
-      /*
-      -1-k counts backwards.
-      The prime factor always has a matching divisor (e.g. 30/2=15 -> both 2 and 15 are divisors).
-      */
-      divisors[divisors_number - 1 - k] = n / factors[j];
-      k++;
-    }
-    else
-    {
-      a = 1;
-      int ax = 1;
-      while (a <= multiplicity[j])
-      {
-        ax = ax * factors[j];
-        divisors[k] = ax;
-        divisors[divisors_number - 1 - k] = n / ax;
-        a++;
-        k++;
-      }
-    }
-  }
-  return 0;
-}
-
-
 int main(int argc,char **argv)
 {
-  int i,j,loop,n,nf,f[16],m[16]; // the product of the first 16 primes is larger than 2^64
+  int i,j,n,nf,f[16],m[16]; // the product of the first 16 primes is larger than 2^64
   
   for(i = 1;i < argc;i++)
   {
@@ -129,19 +77,43 @@ int main(int argc,char **argv)
         else
           printf("%s%d^%d",(j == 0) ? "" : "*",f[j],m[j]);
       printf(" (%s)\n",(nf == 1 && m[0] == 1) ? "prime" : "composite");
-      
-      // Calculate the number of divisors
-      int divisors_number = calculate_divisor_number(nf,m); // Check function above
 
-      // Calculate the number divisors and then print them
-      int divisors[divisors_number];
-      calculate_divisors(n,divisors_number,nf,f,m,divisors); // Check function above
-      printf("Number divisors: ");
-      for (loop = 0; loop < divisors_number; loop++)
+      int c[16]; // Incrementa a contagem c
+      for(int i=0; i<15; i++)
       {
-        printf("%d ", divisors[loop]);
+        c[i]=0;
       }
-      printf("\n");
+
+      int k = 0;
+
+      while (k < nf)
+      {
+        int d = 1;
+        for (int p = 0; p < nf ; p++)
+        {
+          for (int x = 0; x < c[p]; x++)
+          {
+            d = d * f[p];
+          }
+          
+        }
+        printf("%d\n",d);
+
+        k = 0;
+        while(k < nf)
+        {
+          if (c[k] < m[k])
+          {
+            c[k]++;
+            break;
+          }
+          else
+          {
+            c[k] = 0;
+            k++;
+          }
+        }
+      }
     }
   }
   return 0;
