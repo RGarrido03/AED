@@ -23,7 +23,7 @@ T sum(const T *a,int n)
 template <typename T>
 double mean(const T *a, int n)
 {
-  T sum_array = sum<T>(*a, n);
+  T sum_array = sum<T>(a, n);
   double mean_array = sum_array / n;
   return mean_array;
 }
@@ -36,10 +36,14 @@ int main(void)
   cout << "ia[] sum: "
        << std::setw(5)
        << sum<int>(ia,size(ia))
+       << ", mean: "
+       << mean<int>(ia,size(ia))
        << endl
        << "da[] sum: "
        << std::fixed << std::setw(12) << std::setprecision(6)
        << sum<double>(da,size(da))
+       << ", mean: "
+       << mean<double>(da,size(da))
        << endl;
   return 0;
 }

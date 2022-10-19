@@ -22,6 +22,8 @@ class stack
   private:
     T d_data[max_size];
     int d_size;
+    int stack_full = 1;
+    int stack_empty = 0;
   public:
     stack(void)
     { // constructor
@@ -35,7 +37,7 @@ class stack
     void push(T v)
     { // put a thing in the stack
       if(d_size >= max_size)
-        cerr << "push error: the stack is full" << endl; // nice place to throw an exception!
+        throw stack_full;
       else
         d_data[d_size++] = v;
     }
@@ -49,7 +51,7 @@ class stack
 
       if(d_size <= 0)
       {
-        cerr << "pop error: the stack is empty" << endl; // nice place to throw an exception!
+        throw stack_empty;
         v = T(0); // this assumes that the compiler knows how to convert an integer to type T
       }
       else
@@ -66,7 +68,7 @@ class stack
 
       if(d_size <= 0)
       {
-        cerr << "top error: the stack is empty" << endl; // nice place to throw an exception!
+        throw stack_empty;
         v = T(0); // this assumes that the compiler knows how to convert an integer to type T
       }
       else
@@ -79,12 +81,51 @@ int main(void)
 {
   stack<int,10> s; // a stack capable of holding 10 integers
 
-  cout << "push: 3" << endl;
-  s.push(3);
-  cout << "push: 7" << endl;
-  s.push(7);
-  cout << "pop: " << s.pop() << endl; // should print 7
-  cout << "top: " << s.top() << endl; // should print 3
-  cout << "pop: " << s.pop() << endl; // should print 3
+  try
+  {
+    cout << "push: 3" << endl;
+    s.push(3);
+  }
+  catch(int i)
+  {
+    cout << "push error: the stack is full [" << i << "]" << endl;
+  }
+
+  try
+  {
+    cout << "push: 7" << endl;
+    s.push(7);
+  }
+  catch(int i)
+  {
+    cout << "push error: the stack is full [" << i << "]" << endl;
+  }
+  
+  try
+  {
+    cout << "pop: " << s.pop() << endl; // should print 7
+  }
+  catch(int i)
+  {
+    cout << "pop error: the stack is empty [" << i << "]" << endl;
+  }
+
+  try
+  {
+    cout << "top: " << s.top() << endl; // should print 3
+  }
+  catch(int i)
+  {
+    cout << "top error: the stack is empty [" << i << "]" << endl;
+  }
+
+  try
+  {
+    cout << "pop: " << s.pop() << endl; // should print 7
+  }
+  catch(int i)
+  {
+    cout << "pop error: the stack is empty [" << i << "]" << endl;
+  }
   return 0;
 }
