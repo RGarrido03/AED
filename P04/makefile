@@ -19,6 +19,9 @@ clean:
 functions:		functions.c
 	cc -Wall -O2 $^ -o $@
 
+functions_noopt:	functions.c
+	cc -Wall -O0 $^ -o $@
+
 functions_extra:	functions_extra.c
 	cc -Wall -O2 $^ -o $@
 
