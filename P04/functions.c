@@ -11,7 +11,7 @@ typedef signed long long s64;
 // -----------------------------------------------------------------------
 // Elapsed time function definition, according to the OS
 
-#if defined(__linux__) || defined(__APPLE__) // GNU/Linux and macOS
+#if defined(__linux__) || defined(__APPLE__)
 
 #include <time.h>
 
@@ -22,28 +22,6 @@ double cpu_time(void)
   if(clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&current_time) != 0)  // the first argument could also be CLOCK_REALTIME
     return -1.0; // clock_gettime() failed!!!
   return (double)current_time.tv_sec + 1.0e-9 * (double)current_time.tv_nsec;
-}
-
-#endif
-
-
-#if defined(_MSC_VER) || defined(_WIN32) || defined(_WIN64) // Windows
-
-#include <windows.h>
-
-double cpu_time(void)
-{
-  static LARGE_INTEGER frequency;
-  static int first_time = 1;
-  LARGE_INTEGER current_time;
-
-  if(first_time != 0)
-  {
-    QueryPerformanceFrequency(&frequency);
-    first_time = 0;
-  }
-  QueryPerformanceCounter(&current_time);
-  return (double)current_time.QuadPart / (double)frequency.QuadPart;
 }
 
 #endif
