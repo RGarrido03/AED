@@ -43,7 +43,6 @@ int check_parenthesis(const char *s)
     while (!stack.is_empty())
       cout << "  Unmatched '(' at position " << stack.pop() << "\n";
   
-  
   return -1;
 }
 
