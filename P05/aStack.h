@@ -16,6 +16,20 @@ class aStack
     int max_size; // maximum stack size
     int cur_size; // current stack size
     T *data;      // the stack data (stored in an array)
+    T *new_data;
+
+    void resize(int n = 100)
+    {
+      new_data = new T[n];
+      for(int i = 0; i < cur_size; i++)
+      {
+        new_data[i] = data[i];
+      }
+
+      delete[] data;
+      data = new_data;
+      max_size = n;
+    }
   public:
     aStack(int n = 100)
     {
@@ -54,7 +68,11 @@ class aStack
     }
     void push(T &v)
     {
-      assert(cur_size < max_size);
+      if (cur_size == max_size)
+      {
+        resize(cur_size + 1);
+      }
+      
       data[cur_size++] = v;
     }
     T pop(void)
