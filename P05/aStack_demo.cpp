@@ -11,9 +11,39 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+
 int check_parenthesis(const char *s)
 {
-  // put your code here (20 lines of code should be enough)
+  aStack<int> stack;
+  int j;
+
+  for (j = 0; s[j] != '\0'; j++)
+  {
+    if (s[j] == '(')
+      stack.push(j);
+    
+    else if (s[j] == ')')
+    {
+      if (stack.size() > 0)
+      {
+        cout << "  '(' at position " << stack.top() << " and matching ')' at position " << j << "\n";
+        stack.pop();
+      }
+      else
+      {
+        cout << "  Unmatched ')' at position " << j << "\n";
+        return -1;
+      }
+    }
+  }
+
+  if (stack.is_empty())
+    return 0;
+  else
+    while (!stack.is_empty())
+      cout << "  Unmatched '(' at position " << stack.pop() << "\n";
+  
+  
   return -1;
 }
 
@@ -29,9 +59,9 @@ int main(int argc,char **argv)
   {
     cout << argv[i] << endl;
     if(check_parenthesis(argv[i]) == 0)
-      cout << "  good" << endl;
+      cout << "  good\n" << endl;
     else
-      cout << "  bad" << endl;
+      cout << "  bad\n" << endl;
   }
   return 0;
 }
