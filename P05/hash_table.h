@@ -12,7 +12,7 @@
 //   so the program can only have one hash table
 // * it is assumed that the malloc() function does not fail (if it fails, the program will
 //   terminate with a segmentation fault
-// * the are no functions to free memory
+// * there are no functions to free memory
 //
 
 typedef struct hash_table_node
@@ -107,7 +107,25 @@ unsigned int hash_function(const char *str)
 
 hash_table_node *find_hash_table_node(char key[64])
 {
-  // place your code here
+  int idx = hash_function(key);
+
+  if (hash_table[idx] == NULL) {return NULL;}
+  else
+  {
+    char* hash_key = hash_table[idx]->key;
+    if (strncmp(hash_key,key,63) == 0) {return hash_table[idx];}
+    else 
+      while (strncmp(hash_key,key,63) != 0)
+      {
+        
+      }
+      return hash_table[idx];
+  }
+  // 1. usa a key para calcular idx
+  // Se hash_table[idx] == NULL, retorna NULL
+  // else, verifica se hash_table[idx]->key == key
+  // Se sim, retorna hash_table[idx]
+  // Se não, percorre, para a direita, a lista ligada de hash_table[idx] até encontrar o nó com a key ou até chegar ao fim da lista
 }
 
 
@@ -125,5 +143,7 @@ hash_table_node *find_hash_table_node(char key[64])
 
 void insert_hash_table_node(hash_table_node *n)
 {
-  // place your code here
+  int idx = hash_function(n->key);
+  n->next = hash_table[idx];
+  hash_table[idx] = n;
 }

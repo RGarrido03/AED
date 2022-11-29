@@ -41,7 +41,7 @@ solution_aMinHeap_test:	solution_aMinHeap_test.cpp solution_aMinHeap.h
 
 
 count_words:		count_words.c hash_table.h
-	cc -Wall -O2 count_words.c -o $@
+	cc -Wall -g -O2 count_words.c -o $@
 
 solution_count_words:	solution_count_words.c solution_hash_table.h
 	cc -Wall -O2 solution_count_words.c -o $@
